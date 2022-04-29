@@ -1,61 +1,118 @@
 %*----------- SLIDE -------------------------------------------------------------
-\begin{frame}[c]{A tropa dos quatro incríveis}
-    %\transboxin[duration=1,direction=30]
-    A simulação deverá ser desenvolvida com 4 unidades Darwin-OP, comumente esta unidade é utilizada para desafios em competições de robótica.
+\begin{frame}[c]{\textit{Monte Carlo localization}}
+    Para obter a posição do robô é mantido:
     \newline
 
-    A tropa será composta por 4 Darwin-OP, e deverá realizar duas missões:
     \begin{itemize}
-        \item marchar em forma unida em linha;
-        \item realizar corrida de revezamento.
+        \item uma densidade de probabilidade da localização do robô dentro de determinado tempo;
+        \item todas as observações por tempo;
+        \item todas as entradas de controle por tempo.
     \end{itemize}
 
-    \begin{figure}
-        \includegraphics[trim = 0 20 0 50, clip, width=0.8\textwidth]{darwin-op-sequencia}
-        %\caption{.}
-    \end{figure}
+\end{frame}
+
+%*----------- SLIDE -------------------------------------------------------------
+\begin{frame}[c]{\textit{Monte Carlo localization}}
+    Para realizar esse filtro é utilizado \textit{Monte Carlo localization}. é um filtro de partículas onde cada partícula representa uma possível posição com um peso associado.
+
+    E para atualizar os dados da posição são alternados dois estados
+    \newline
+
+    \begin{enumerate}
+        \item \textit{prediction step};
+        \item \textit{correction step}.
+    \end{enumerate}
+
+\end{frame}
+
+%*----------- SLIDE -------------------------------------------------------------
+\begin{frame}[c]{\textit{Monte Carlo localization}}
+    \begin{center}
+    
+        \includemedia[
+            width=0.7\linewidth,
+            totalheight=0.39375\linewidth,
+            activate=pageopen,
+            passcontext, 
+            %transparent,
+            addresource=./Source/movies/Montecarlo_localization.mp4,
+            flashvars={
+            source=./Source/movies/Montecarlo_localization.mp4
+            &autoPlay=true
+            &autoRewind=true
+            &loop=true}
+            ]
+            {\fbox{\includegraphics{Source/movies/montecarlo.png}}}{VPlayer.swf}
+            
+            Monte Carlo localization\cite{Montec41:online}
+    \end{center}
+
 %*----------- notes
     \note[item]{Notes can help you to remember important information. Turn on the notes option.}
+ \end{frame}
+
+%-
+
+%*----------- SLIDE -------------------------------------------------------------
+\begin{frame}[c]{\textit{Prediction Models for MLS maps}}
+    O \textit{prediction model} é feito da seguinte forma:
+
+    \begin{columns}[t]
+        \column{.05\linewidth}
+        \column{.5\linewidth}
+            \begin{enumerate}
+                \item obtêm um possível resultado para a ação aplicando um modelo probabilístico;
+                \item adapta o vetor de movimento de movimento com base nos pedaços de superfície obtidos no MLS map;
+                \item conseguimos a posição e orientação;
+                \item com exceção do parâmetro de altura (z)  que tem que ser ajustado manualmente.
+            \end{enumerate}
+        \column{.6\linewidth}
+        \begin{center}
+        %\centerline{
+            \begin{figure}
+                \includegraphics[width=.9\textwidth]{vector.jpg}
+                \caption{Z vector\cite{article}}
+                % \roundpic[xshift=0cm,yshift=0cm]{2.5cm}{6cm}{pista}
+                %\caption{Pista de corrida \cite{agostini2007}}
+            \end{figure}
+        %}
+        \end{center}
+    \end{columns}
+
 \end{frame}
+
+\begin{frame}[c]{\textit{Endpoint Sensor Model for MLS Maps}}
+    Nesse modelo, cada raio do sensor é tratado individualmente e determinado a probabilidade de todo o scan por fatorizar todos os raios
+    \newline
+
+    \begin{enumerate}
+        \item é a mistura de três distribuições(normal distribution, uniform distribution, point mass distribution);
+        \item a probabilidade depende apenas da distância entre o raio laser e o ponto mais proximo no mapa;
+        \item o angulo dos raios em relação ao frame do sensor são usados para definir o angulo dos obstáculos.
+    \end{enumerate}
+
+\end{frame}
+
 %-
 %*----------- SLIDE -------------------------------------------------------------
-\begin{frame}[t]{Algumas regras}
-    \begin{itemize}
-        \item A marcha deverá ser realizada diante de um percurso de 2 metros.
-        \item A marcha e a corrida de revezamento deverão serem realizadas numa pista de corrida;
-        \item A corrida deverá ser realizada numa pista de 8 metros;
-        \item Cada Darwin-OP deverá percorrer 2 metros para realizar o revezamento;
-        \item A região de revezamento deverá ser uma área de até 0.4 metros;
-        \item O conceito para o revezamento será o de alinhar-se os dois Darwin-OP durante até 15 segundos a uma distância de no máximo 0.2 metros entre ambos, ou seja será considerado passagem de bastão quando os dois Darwin-OP passarem 15 segundos com movimentos sincronizados a uma distância máxima de 0.2 metros dentro da região de revezamento;
-        \item A pista de corrida deverá ser considerada analogamente a uma pista real;
-        \item A lateral da pista deverá ter lados de 2 metros;
-        \item Considerar sempre os critérios de uma corrida de revezamento.
-    \end{itemize}
-   
-    % \begin{columns}[t]
-    %     \column{.45\textwidth}
-    %         detalhar sistemas em subconjuntos\\
-    %         listar possíveis modos de falhas\\
-    %         analisar cada modo de falha, juntamente com suas possíveis causas e sintomas
-    %     \column{.45\textwidth}
-    %         estimar os efeitos de cada modo de falhas\\
-    %         estimar a criticidade de cada efeito\\
-    %         identificar ações para minimizar falhas
-    % \end{columns}
-%*----------- notes
-    \note[item]{Notes can help you to remember important information. Turn on the notes option.}
-\end{frame}
-%-
-%*----------- SLIDE -------------------------------------------------------------
-\begin{frame}[c]{A pista}
+\begin{frame}[c]{Resultados experimentais}
     \begin{figure}
-        %\includegraphics[width=0.7\textwidth]{pista_corrida}
+        \includegraphics[width=0.7\textwidth]{robot.jpg}
        
-        \roundpic[xshift=0cm,yshift=0cm]{3cm}{7cm}{pista_corrida}
+        % \roundpic[xshift=0cm,yshift=0cm]{3cm}{7cm}{pista_corrida}
           
-        \caption{Formato de um pista de corrida.\cite{agostini2007}}
+        \caption{Robô físico\cite{article}}
     \end{figure}
 %*----------- notes
     \note[item]{Notes can help you to remember important information. Turn on the notes option.}
 \end{frame}
 %-
+
+\begin{frame}[c]{Resultados experimentais}
+Pode ser concluído que:
+    \begin{enumerate}
+        \item \textit{global localization};
+        \item \textit{tracking}.
+    \end{enumerate}
+
+\end{frame}
